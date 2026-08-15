@@ -1,6 +1,6 @@
 {
-  "name": "🪴Lista de Compras 🌱",
-  "short_name": "🪴lista"
+  "name": "🪴lista",
+  "short_name": "🪴lista",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#e8f5e9",
