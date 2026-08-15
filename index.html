@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>🌱 Lista de Compras</title>
 
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2e7d32">
+
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -78,6 +84,11 @@
       background: #388e3c;
       color: white;
       border: none;
+      cursor: pointer;
+    }
+
+    .btn-agregar:hover {
+      background: #2e7d32;
     }
 
     .barra {
@@ -140,6 +151,7 @@
       color: white;
       border: none;
       padding: 7px 10px;
+      cursor: pointer;
     }
 
     .vacio {
@@ -149,6 +161,7 @@
     }
 
     @media (max-width: 550px) {
+
       .entrada {
         flex-direction: column;
       }
@@ -156,18 +169,28 @@
       .btn-agregar {
         width: 100%;
       }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
   <div class="app">
 
     <header>
+
       <h1>🌱 Mi Lista de Compras</h1>
-      <p>🌿 Organiza tus compras y haz crecer tu lista</p>
+
+      <p>
+        🌿 Organiza tus compras y haz crecer tu lista
+      </p>
+
     </header>
+
 
     <div class="agregar">
 
@@ -179,18 +202,52 @@
           placeholder="🌿 Escribe un producto..."
         >
 
+
         <select id="categoria">
+
           <option value="Frutas">🍎 Frutas</option>
+
           <option value="Verduras">🥬 Verduras</option>
+
           <option value="Lácteos">🥛 Lácteos</option>
+
           <option value="Carnes">🥩 Carnes</option>
+
           <option value="Bebidas">🥤 Bebidas</option>
+
           <option value="Snacks">🍪 Snacks</option>
-          <option value="Limpieza">🧹 Limpieza</option>
-          <option value="Otros">🌿 Otros</option>
+
+          <option value="Aceites y Salsas">
+            🫒 Aceites y Salsas
+          </option>
+
+          <option value="Panes y Cereales">
+            🍞 Panes y Cereales
+          </option>
+
+          <option value="Especias y Sazonadores">
+            🧂 Especias y Sazonadores
+          </option>
+
+          <option value="Artículos para el Hogar">
+            🧹 Artículos para el Hogar
+          </option>
+
+          <option value="Chacharitas">
+            🛍️ Chacharitas
+          </option>
+
+          <option value="Otros">
+            📦 Otros
+          </option>
+
         </select>
 
-        <button class="btn-agregar" onclick="agregarProducto()">
+
+        <button
+          class="btn-agregar"
+          onclick="agregarProducto()"
+        >
           🌱 Agregar
         </button>
 
@@ -198,47 +255,82 @@
 
     </div>
 
+
     <div class="progreso">
 
-      <strong>🌿 Progreso de compras</strong>
+      <strong>
+        🌿 Progreso de compras
+      </strong>
 
       <div id="textoProgreso">
         0 de 0 productos comprados
       </div>
 
       <div class="barra">
-        <div class="barra-progreso" id="barraProgreso"></div>
+
+        <div
+          class="barra-progreso"
+          id="barraProgreso"
+        ></div>
+
       </div>
 
     </div>
+
 
     <div id="listas"></div>
 
   </div>
 
+
+
   <script>
 
     const categorias = [
+
       "Frutas",
+
       "Verduras",
+
       "Lácteos",
+
       "Carnes",
+
       "Bebidas",
+
       "Snacks",
-      "Limpieza",
+
+      "Aceites y Salsas",
+
+      "Panes y Cereales",
+
+      "Especias y Sazonadores",
+
+      "Artículos para el Hogar",
+
+      "Chacharitas",
+
       "Otros"
+
     ];
 
+
     let productos =
-      JSON.parse(localStorage.getItem("listaPlantas")) || [];
+      JSON.parse(
+        localStorage.getItem("listaPlantas")
+      ) || [];
+
 
 
     function guardar() {
+
       localStorage.setItem(
         "listaPlantas",
         JSON.stringify(productos)
       );
+
     }
+
 
 
     function agregarProducto() {
@@ -252,22 +344,38 @@
       const nombre =
         input.value.trim();
 
+
       if (nombre === "") {
-        alert("🌱 Escribe un producto primero.");
+
+        alert(
+          "🌱 Escribe un producto primero."
+        );
+
         return;
+
       }
 
+
       productos.push({
+
         nombre: nombre,
+
         categoria: categoria,
+
         comprado: false
+
       });
+
 
       input.value = "";
 
+
       guardar();
+
       mostrarProductos();
+
     }
+
 
 
     function cambiarEstado(indice) {
@@ -275,18 +383,26 @@
       productos[indice].comprado =
         !productos[indice].comprado;
 
+
       guardar();
+
       mostrarProductos();
+
     }
+
 
 
     function eliminarProducto(indice) {
 
       productos.splice(indice, 1);
 
+
       guardar();
+
       mostrarProductos();
+
     }
+
 
 
     function mostrarProductos() {
@@ -294,144 +410,297 @@
       const contenedor =
         document.getElementById("listas");
 
+
       contenedor.innerHTML = "";
+
 
       if (productos.length === 0) {
 
         contenedor.innerHTML = `
+
           <div class="vacio">
-            🌱 Tu lista está vacía.<br>
+
+            🌱 Tu lista está vacía.
+
+            <br>
+
             ¡Agrega algo para comenzar!
+
           </div>
+
         `;
 
       }
 
 
+
       categorias.forEach(categoria => {
 
+
         const productosCategoria =
+
           productos
+
             .map((producto, indice) => ({
+
               ...producto,
+
               indice
+
             }))
+
             .filter(
+
               producto =>
+
                 producto.categoria === categoria
+
             );
 
 
-        if (productosCategoria.length === 0) {
+        if (
+          productosCategoria.length === 0
+        ) {
+
           return;
+
         }
+
 
 
         const seccion =
           document.createElement("div");
 
-        seccion.className = "seccion";
 
-        seccion.innerHTML =
-          `<h2>${categoria}</h2>`;
+        seccion.className =
+          "seccion";
+
+
+        const emoji = {
+
+          "Frutas": "🍎",
+
+          "Verduras": "🥬",
+
+          "Lácteos": "🥛",
+
+          "Carnes": "🥩",
+
+          "Bebidas": "🥤",
+
+          "Snacks": "🍪",
+
+          "Aceites y Salsas": "🫒",
+
+          "Panes y Cereales": "🍞",
+
+          "Especias y Sazonadores": "🧂",
+
+          "Artículos para el Hogar": "🧹",
+
+          "Chacharitas": "🛍️",
+
+          "Otros": "📦"
+
+        };
+
+
+        seccion.innerHTML = `
+
+          <h2>
+            ${emoji[categoria]} ${categoria}
+          </h2>
+
+        `;
 
 
         const lista =
           document.createElement("ul");
 
 
-        productosCategoria.forEach(producto => {
-
-          const item =
-            document.createElement("li");
+        productosCategoria.forEach(
+          producto => {
 
 
-          if (producto.comprado) {
-            item.classList.add("comprado");
+            const item =
+              document.createElement("li");
+
+
+            if (producto.comprado) {
+
+              item.classList.add(
+                "comprado"
+              );
+
+            }
+
+
+            item.innerHTML = `
+
+              <input
+
+                type="checkbox"
+
+                class="checkbox"
+
+                ${
+                  producto.comprado
+                    ? "checked"
+                    : ""
+                }
+
+                onchange="
+
+                  cambiarEstado(
+                    ${producto.indice}
+                  )
+
+                "
+
+              >
+
+
+              <span class="nombre">
+
+                ${producto.nombre}
+
+              </span>
+
+
+              <button
+
+                class="eliminar"
+
+                onclick="
+
+                  eliminarProducto(
+                    ${producto.indice}
+                  )
+
+                "
+
+              >
+
+                🗑️
+
+              </button>
+
+            `;
+
+
+            lista.appendChild(item);
+
           }
 
-
-          item.innerHTML = `
-
-            <input
-              type="checkbox"
-              class="checkbox"
-              ${producto.comprado ? "checked" : ""}
-              onchange="cambiarEstado(${producto.indice})"
-            >
-
-            <span class="nombre">
-              ${producto.nombre}
-            </span>
-
-            <button
-              class="eliminar"
-              onclick="eliminarProducto(${producto.indice})"
-            >
-              🗑️
-            </button>
-
-          `;
-
-
-          lista.appendChild(item);
-
-        });
+        );
 
 
         seccion.appendChild(lista);
+
+
         contenedor.appendChild(seccion);
 
       });
 
 
       actualizarProgreso();
+
     }
+
 
 
     function actualizarProgreso() {
 
-      const total = productos.length;
+      const total =
+        productos.length;
+
 
       const comprados =
+
         productos.filter(
-          producto => producto.comprado
+
+          producto =>
+            producto.comprado
+
         ).length;
 
 
       const porcentaje =
+
         total === 0
+
           ? 0
+
           : Math.round(
+
               (comprados / total) * 100
+
             );
 
 
-      document.getElementById("textoProgreso")
+      document
+        .getElementById(
+          "textoProgreso"
+        )
         .textContent =
+
         `${comprados} de ${total} productos comprados (${porcentaje}%)`;
 
 
-      document.getElementById("barraProgreso")
+      document
+        .getElementById(
+          "barraProgreso"
+        )
         .style.width =
+
         porcentaje + "%";
+
     }
 
 
-    document
-      .getElementById("producto")
-      .addEventListener("keydown", function(event) {
 
-        if (event.key === "Enter") {
-          agregarProducto();
+    document
+
+      .getElementById("producto")
+
+      .addEventListener(
+
+        "keydown",
+
+        function(event) {
+
+
+          if (
+            event.key === "Enter"
+          ) {
+
+            agregarProducto();
+
+          }
+
         }
 
-      });
+      );
+
+
+
+    if (
+      "serviceWorker" in navigator
+    ) {
+
+      navigator.serviceWorker.register(
+        "sw.js"
+      );
+
+    }
+
 
 
     mostrarProductos();
 
   </script>
 
+
 </body>
+
 </html>
