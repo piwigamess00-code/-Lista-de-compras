@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌱 Lista de Compras</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #e8f5e9;
+      color: #234d20;
+    }
+
+    .app {
+      max-width: 650px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 25px;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    header p {
+      margin-bottom: 0;
+    }
+
+    .agregar,
+    .progreso,
+    .seccion {
+      background: white;
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .entrada {
+      display: flex;
+      gap: 8px;
+    }
+
+    input,
+    select,
+    button {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #b7cdb7;
+      font-size: 15px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    select {
+      background: white;
+    }
+
+    .btn-agregar {
+      background: #388e3c;
+      color: white;
+      border: none;
+    }
+
+    .barra {
+      height: 15px;
+      background: #d7ead7;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .barra-progreso {
+      height: 100%;
+      width: 0%;
+      background: #43a047;
+      transition: width 0.3s;
+    }
+
+    .seccion h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #d7ead7;
+      padding-bottom: 8px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      margin: 6px 0;
+      background: #f1f8f1;
+      border-radius: 10px;
+    }
+
+    .nombre {
+      flex: 1;
+    }
+
+    li.comprado {
+      opacity: 0.6;
+    }
+
+    li.comprado .nombre {
+      text-decoration: line-through;
+    }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: #388e3c;
+    }
+
+    .eliminar {
+      background: #d32f2f;
+      color: white;
+      border: none;
+      padding: 7px 10px;
+    }
+
+    .vacio {
+      text-align: center;
+      padding: 30px;
+      color: #6b806b;
+    }
+
+    @media (max-width: 550px) {
+      .entrada {
+        flex-direction: column;
+      }
+
+      .btn-agregar {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <header>
+      <h1>🌱 Mi Lista de Compras</h1>
+      <p>🌿 Organiza tus compras y haz crecer tu lista</p>
+    </header>
+
+    <div class="agregar">
+
+      <div class="entrada">
+
+        <input
+          type="text"
+          id="producto"
+          placeholder="🌿 Escribe un producto..."
+        >
+
+        <select id="categoria">
+          <option value="Frutas">🍎 Frutas</option>
+          <option value="Verduras">🥬 Verduras</option>
+          <option value="Lácteos">🥛 Lácteos</option>
+          <option value="Carnes">🥩 Carnes</option>
+          <option value="Bebidas">🥤 Bebidas</option>
+          <option value="Snacks">🍪 Snacks</option>
+          <option value="Limpieza">🧹 Limpieza</option>
+          <option value="Otros">🌿 Otros</option>
+        </select>
+
+        <button class="btn-agregar" onclick="agregarProducto()">
+          🌱 Agregar
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="progreso">
+
+      <strong>🌿 Progreso de compras</strong>
+
+      <div id="textoProgreso">
+        0 de 0 productos comprados
+      </div>
+
+      <div class="barra">
+        <div class="barra-progreso" id="barraProgreso"></div>
+      </div>
+
+    </div>
+
+    <div id="listas"></div>
+
+  </div>
+
+  <script>
+
+    const categorias = [
+      "Frutas",
+      "Verduras",
+      "Lácteos",
+      "Carnes",
+      "Bebidas",
+      "Snacks",
+      "Limpieza",
+      "Otros"
+    ];
+
+    let productos =
+      JSON.parse(localStorage.getItem("listaPlantas")) || [];
+
+
+    function guardar() {
+      localStorage.setItem(
+        "listaPlantas",
+        JSON.stringify(productos)
+      );
+    }
+
+
+    function agregarProducto() {
+
+      const input =
+        document.getElementById("producto");
+
+      const categoria =
+        document.getElementById("categoria").value;
+
+      const nombre =
+        input.value.trim();
+
+      if (nombre === "") {
+        alert("🌱 Escribe un producto primero.");
+        return;
+      }
+
+      productos.push({
+        nombre: nombre,
+        categoria: categoria,
+        comprado: false
+      });
+
+      input.value = "";
+
+      guardar();
+      mostrarProductos();
+    }
+
+
+    function cambiarEstado(indice) {
+
+      productos[indice].comprado =
+        !productos[indice].comprado;
+
+      guardar();
+      mostrarProductos();
+    }
+
+
+    function eliminarProducto(indice) {
+
+      productos.splice(indice, 1);
+
+      guardar();
+      mostrarProductos();
+    }
+
+
+    function mostrarProductos() {
+
+      const contenedor =
+        document.getElementById("listas");
+
+      contenedor.innerHTML = "";
+
+      if (productos.length === 0) {
+
+        contenedor.innerHTML = `
+          <div class="vacio">
+            🌱 Tu lista está vacía.<br>
+            ¡Agrega algo para comenzar!
+          </div>
+        `;
+
+      }
+
+
+      categorias.forEach(categoria => {
+
+        const productosCategoria =
+          productos
+            .map((producto, indice) => ({
+              ...producto,
+              indice
+            }))
+            .filter(
+              producto =>
+                producto.categoria === categoria
+            );
+
+
+        if (productosCategoria.length === 0) {
+          return;
+        }
+
+
+        const seccion =
+          document.createElement("div");
+
+        seccion.className = "seccion";
+
+        seccion.innerHTML =
+          `<h2>${categoria}</h2>`;
+
+
+        const lista =
+          document.createElement("ul");
+
+
+        productosCategoria.forEach(producto => {
+
+          const item =
+            document.createElement("li");
+
+
+          if (producto.comprado) {
+            item.classList.add("comprado");
+          }
+
+
+          item.innerHTML = `
+
+            <input
+              type="checkbox"
+              class="checkbox"
+              ${producto.comprado ? "checked" : ""}
+              onchange="cambiarEstado(${producto.indice})"
+            >
+
+            <span class="nombre">
+              ${producto.nombre}
+            </span>
+
+            <button
+              class="eliminar"
+              onclick="eliminarProducto(${producto.indice})"
+            >
+              🗑️
+            </button>
+
+          `;
+
+
+          lista.appendChild(item);
+
+        });
+
+
+        seccion.appendChild(lista);
+        contenedor.appendChild(seccion);
+
+      });
+
+
+      actualizarProgreso();
+    }
+
+
+    function actualizarProgreso() {
+
+      const total = productos.length;
+
+      const comprados =
+        productos.filter(
+          producto => producto.comprado
+        ).length;
+
+
+      const porcentaje =
+        total === 0
+          ? 0
+          : Math.round(
+              (comprados / total) * 100
+            );
+
+
+      document.getElementById("textoProgreso")
+        .textContent =
+        `${comprados} de ${total} productos comprados (${porcentaje}%)`;
+
+
+      document.getElementById("barraProgreso")
+        .style.width =
+        porcentaje + "%";
+    }
+
+
+    document
+      .getElementById("producto")
+      .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+          agregarProducto();
+        }
+
+      });
+
+
+    mostrarProductos();
+
+  </script>
+
+</body>
+</html>
