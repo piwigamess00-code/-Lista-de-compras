@@ -2,13 +2,25 @@
 <html lang="es">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>🪴 Lista de Compras</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#2e7d32">
+  <title>🪴lista</title>
+
+  <link
+    rel="manifest"
+    href="manifest.json"
+  >
+
+  <meta
+    name="theme-color"
+    content="#2e7d32"
+  >
 
   <style>
 
@@ -16,26 +28,52 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --fondo: #e8f5e9;
+      --tarjeta: #ffffff;
+      --texto: #234d20;
+      --secundario: #607060;
+      --borde: #c8ddc8;
+      --item: #f1f8f1;
+      --verde: #2e7d32;
+      --verde2: #43a047;
+      --rojo: #d32f2f;
+    }
+
+    body.oscuro {
+      --fondo: #121612;
+      --tarjeta: #1d241e;
+      --texto: #eeeeee;
+      --secundario: #aab5aa;
+      --borde: #3b493c;
+      --item: #283129;
+      --verde: #66bb6a;
+      --verde2: #81c784;
+      --rojo: #ef5350;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #e8f5e9;
-      color: #234d20;
+      background: var(--fondo);
+      color: var(--texto);
+      transition: 0.25s;
     }
 
     .app {
       max-width: 650px;
       margin: auto;
-      padding: 20px;
+      padding: 18px;
     }
 
     header {
-      background: #2e7d32;
+      position: relative;
+      background: var(--verde);
       color: white;
-      padding: 25px;
+      padding: 25px 60px 25px 25px;
       border-radius: 20px;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     header h1 {
@@ -44,56 +82,80 @@
     }
 
     header p {
-      margin-bottom: 0;
+      margin: 8px 0 0;
     }
 
-    .agregar,
-    .progreso,
+    .settings-btn {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .tarjeta,
     .seccion {
-      background: white;
+      background: var(--tarjeta);
       padding: 15px;
       border-radius: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      margin-bottom: 18px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
     }
 
     .entrada {
       display: flex;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     input,
     select,
     button {
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #b7cdb7;
+      font-family: inherit;
       font-size: 15px;
     }
 
-    input {
-      flex: 1;
-      min-width: 0;
+    input,
+    select {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--borde);
+      background: var(--tarjeta);
+      color: var(--texto);
     }
 
-    select {
-      background: white;
+    #producto {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    #cantidad {
+      width: 100px;
+    }
+
+    #categoria {
+      min-width: 150px;
     }
 
     .btn-agregar {
-      background: #388e3c;
-      color: white;
+      padding: 12px 16px;
       border: none;
+      border-radius: 10px;
+      background: var(--verde);
+      color: white;
       cursor: pointer;
-    }
-
-    .btn-agregar:hover {
-      background: #2e7d32;
+      font-weight: bold;
     }
 
     .barra {
       height: 15px;
-      background: #d7ead7;
+      background: var(--item);
       border-radius: 20px;
       overflow: hidden;
       margin-top: 10px;
@@ -102,14 +164,14 @@
     .barra-progreso {
       height: 100%;
       width: 0%;
-      background: #43a047;
-      transition: width 0.3s;
+      background: var(--verde2);
+      transition: 0.3s;
     }
 
     .seccion h2 {
-      margin-top: 0;
-      border-bottom: 2px solid #d7ead7;
+      margin: 0 0 10px;
       padding-bottom: 8px;
+      border-bottom: 2px solid var(--borde);
     }
 
     ul {
@@ -121,43 +183,60 @@
     li {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       padding: 10px;
       margin: 6px 0;
-      background: #f1f8f1;
+      background: var(--item);
       border-radius: 10px;
+    }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--verde);
     }
 
     .nombre {
       flex: 1;
+      word-break: break-word;
+    }
+
+    .cantidad {
+      font-weight: bold;
+      color: var(--verde);
+      white-space: nowrap;
+    }
+
+    .btn-editar,
+    .btn-eliminar {
+      border: none;
+      border-radius: 8px;
+      padding: 7px 9px;
+      cursor: pointer;
+    }
+
+    .btn-editar {
+      background: #78909c;
+      color: white;
+    }
+
+    .btn-eliminar {
+      background: var(--rojo);
+      color: white;
     }
 
     li.comprado {
-      opacity: 0.6;
+      opacity: 0.55;
     }
 
     li.comprado .nombre {
       text-decoration: line-through;
     }
 
-    .checkbox {
-      width: 20px;
-      height: 20px;
-      accent-color: #388e3c;
-    }
-
-    .eliminar {
-      background: #d32f2f;
-      color: white;
-      border: none;
-      padding: 7px 10px;
-      cursor: pointer;
-    }
-
     .vacio {
       text-align: center;
       padding: 30px;
-      color: #6b806b;
+      color: var(--secundario);
     }
 
     @media (max-width: 550px) {
@@ -166,6 +245,9 @@
         flex-direction: column;
       }
 
+      #producto,
+      #cantidad,
+      #categoria,
       .btn-agregar {
         width: 100%;
       }
@@ -176,23 +258,26 @@
 
 </head>
 
-
 <body>
 
   <div class="app">
 
     <header>
 
-      <h1>🌱 Mi Lista de Compras</h1>
+      <button
+        class="settings-btn"
+        onclick="abrirSettings()"
+      >
+        ⚙️
+      </button>
 
-      <p>
-        🌿 Organiza tus compras y haz crecer tu lista
-      </p>
+      <h1>🪴lista</h1>
+
+      <p>🌿 Organiza tus compras</p>
 
     </header>
 
-
-    <div class="agregar">
+    <div class="tarjeta">
 
       <div class="entrada">
 
@@ -202,20 +287,38 @@
           placeholder="🌿 Escribe un producto..."
         >
 
+        <input
+          type="number"
+          id="cantidad"
+          min="1"
+          placeholder="Cantidad"
+        >
 
         <select id="categoria">
 
-          <option value="Frutas">🍎 Frutas</option>
+          <option value="Frutas">
+            🍎 Frutas
+          </option>
 
-          <option value="Verduras">🥬 Verduras</option>
+          <option value="Verduras">
+            🥬 Verduras
+          </option>
 
-          <option value="Lácteos">🥛 Lácteos</option>
+          <option value="Lácteos">
+            🥛 Lácteos
+          </option>
 
-          <option value="Carnes">🥩 Carnes</option>
+          <option value="Carnes">
+            🥩 Carnes
+          </option>
 
-          <option value="Bebidas">🥤 Bebidas</option>
+          <option value="Bebidas">
+            🥤 Bebidas
+          </option>
 
-          <option value="Snacks">🍪 Snacks</option>
+          <option value="Snacks">
+            🍪 Snacks
+          </option>
 
           <option value="Aceites y Salsas">
             🫒 Aceites y Salsas
@@ -243,7 +346,6 @@
 
         </select>
 
-
         <button
           class="btn-agregar"
           onclick="agregarProducto()"
@@ -255,8 +357,7 @@
 
     </div>
 
-
-    <div class="progreso">
+    <div class="tarjeta">
 
       <strong>
         🌿 Progreso de compras
@@ -277,429 +378,1018 @@
 
     </div>
 
-
     <div id="listas"></div>
+
+  </div>
+    <!-- SETTINGS -->
+
+  <div
+    class="modal-fondo"
+    id="settingsModal"
+  >
+
+    <div class="settings">
+
+      <div class="settings-cabecera">
+
+        <h2>⚙️ Settings</h2>
+
+        <button
+          class="cerrar"
+          onclick="cerrarSettings()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <!-- MODO OSCURO -->
+
+      <div class="setting">
+
+        <div class="setting-info">
+
+          <strong>
+            🌙 Modo oscuro
+          </strong>
+
+          <span>
+            Cambiar el aspecto de la app
+          </span>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            id="modoOscuro"
+            onchange="cambiarModoOscuro()"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <!-- CANTIDADES -->
+
+      <div class="setting">
+
+        <div class="setting-info">
+
+          <strong>
+            🔢 Mostrar cantidades
+          </strong>
+
+          <span>
+            Mostrar u ocultar las cantidades
+          </span>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            id="mostrarCantidades"
+            onchange="cambiarMostrarCantidades()"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+    </div>
 
   </div>
 
 
+  <!-- EDITAR PRODUCTO -->
 
+  <div
+    class="modal-editar"
+    id="editarModal"
+  >
+
+    <div class="editar-box">
+
+      <h2>
+        ✏️ Editar producto
+      </h2>
+
+      <input
+        type="text"
+        id="editarNombre"
+        placeholder="Nombre del producto"
+      >
+
+      <input
+        type="number"
+        id="editarCantidad"
+        min="1"
+        placeholder="Cantidad"
+      >
+
+      <select id="editarCategoria">
+
+        <option value="Frutas">
+          🍎 Frutas
+        </option>
+
+        <option value="Verduras">
+          🥬 Verduras
+        </option>
+
+        <option value="Lácteos">
+          🥛 Lácteos
+        </option>
+
+        <option value="Carnes">
+          🥩 Carnes
+        </option>
+
+        <option value="Bebidas">
+          🥤 Bebidas
+        </option>
+
+        <option value="Snacks">
+          🍪 Snacks
+        </option>
+
+        <option value="Aceites y Salsas">
+          🫒 Aceites y Salsas
+        </option>
+
+        <option value="Panes y Cereales">
+          🍞 Panes y Cereales
+        </option>
+
+        <option value="Especias y Sazonadores">
+          🧂 Especias y Sazonadores
+        </option>
+
+        <option value="Artículos para el Hogar">
+          🧹 Artículos para el Hogar
+        </option>
+
+        <option value="Chacharitas">
+          🛍️ Chacharitas
+        </option>
+
+        <option value="Otros">
+          📦 Otros
+        </option>
+
+      </select>
+
+      <div class="editar-botones">
+
+        <button
+          class="guardar-edicion"
+          onclick="guardarEdicion()"
+        >
+          💾 Guardar
+        </button>
+
+        <button
+          class="cancelar-edicion"
+          onclick="cerrarEditar()"
+        >
+          Cancelar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <style>
+
+    /* SETTINGS */
+
+    .modal-fondo {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-fondo.abierto {
+      display: flex;
+    }
+
+    .settings {
+      width: 100%;
+      max-width: 420px;
+      background: var(--tarjeta);
+      color: var(--texto);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.3);
+    }
+
+    .settings-cabecera {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .settings-cabecera h2 {
+      margin: 0;
+    }
+
+    .cerrar {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 50%;
+      background: var(--item);
+      color: var(--texto);
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .setting {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 5px;
+      border-top: 1px solid var(--borde);
+    }
+
+    .setting-info strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .setting-info span {
+      color: var(--secundario);
+      font-size: 13px;
+    }
+
+    .switch {
+      position: relative;
+      width: 52px;
+      height: 30px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #999;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      left: 3px;
+      top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.25s;
+    }
+
+    .switch input:checked + .slider {
+      background: var(--verde);
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(22px);
+    }
+
+
+    /* EDITAR */
+
+    .modal-editar {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-editar.abierto {
+      display: flex;
+    }
+
+    .editar-box {
+      width: 100%;
+      max-width: 420px;
+      background: var(--tarjeta);
+      color: var(--texto);
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .editar-box h2 {
+      margin-top: 0;
+    }
+
+    .editar-box input,
+    .editar-box select {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .editar-botones {
+      display: flex;
+      gap: 8px;
+    }
+
+    .editar-botones button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .guardar-edicion {
+      background: var(--verde);
+      color: white;
+    }
+
+    .cancelar-edicion {
+      background: var(--item);
+      color: var(--texto);
+    }
+
+  </style>
   <script>
 
-    const categorias = [
+  let productos =
+    JSON.parse(
+      localStorage.getItem("productos")
+    ) || [];
 
-      "Frutas",
-
-      "Verduras",
-
-      "Lácteos",
-
-      "Carnes",
-
-      "Bebidas",
-
-      "Snacks",
-
-      "Aceites y Salsas",
-
-      "Panes y Cereales",
-
-      "Especias y Sazonadores",
-
-      "Artículos para el Hogar",
-
-      "Chacharitas",
-
-      "Otros"
-
-    ];
+  let productoEditando = null;
 
 
-    let productos =
-      JSON.parse(
-        localStorage.getItem("listaPlantas")
-      ) || [];
+  function guardarProductos() {
+
+    localStorage.setItem(
+      "productos",
+      JSON.stringify(productos)
+    );
+
+  }
 
 
+  function agregarProducto() {
 
-    function guardar() {
+    const nombre =
+      document
+        .getElementById("producto")
+        .value
+        .trim();
 
-      localStorage.setItem(
-        "listaPlantas",
-        JSON.stringify(productos)
+    let cantidad =
+      parseInt(
+        document.getElementById("cantidad").value
       );
 
+    const categoria =
+      document.getElementById("categoria").value;
+
+
+    if (!nombre) {
+      return;
     }
 
 
-
-    function agregarProducto() {
-
-      const input =
-        document.getElementById("producto");
-
-      const categoria =
-        document.getElementById("categoria").value;
-
-      const nombre =
-        input.value.trim();
-
-
-      if (nombre === "") {
-
-        alert(
-          "🌱 Escribe un producto primero."
-        );
-
-        return;
-
-      }
-
-
-      productos.push({
-
-        nombre: nombre,
-
-        categoria: categoria,
-
-        comprado: false
-
-      });
-
-
-      input.value = "";
-
-
-      guardar();
-
-      mostrarProductos();
-
+    if (!cantidad || cantidad < 1) {
+      cantidad = 1;
     }
 
 
+    productos.push({
 
-    function cambiarEstado(indice) {
+      id: Date.now(),
 
-      productos[indice].comprado =
-        !productos[indice].comprado;
+      nombre: nombre,
 
+      cantidad: cantidad,
 
-      guardar();
+      categoria: categoria,
 
-      mostrarProductos();
+      comprado: false
 
-    }
-
-
-
-    function eliminarProducto(indice) {
-
-      productos.splice(indice, 1);
+    });
 
 
-      guardar();
-
-      mostrarProductos();
-
-    }
+    guardarProductos();
 
 
-
-    function mostrarProductos() {
-
-      const contenedor =
-        document.getElementById("listas");
+    document.getElementById(
+      "producto"
+    ).value = "";
 
 
-      contenedor.innerHTML = "";
+    document.getElementById(
+      "cantidad"
+    ).value = "";
 
 
-      if (productos.length === 0) {
+    mostrarProductos();
 
-        contenedor.innerHTML = `
+  }
 
+
+  function mostrarProductos() {
+
+    const contenedor =
+      document.getElementById("listas");
+
+    contenedor.innerHTML = "";
+
+
+    if (productos.length === 0) {
+
+      contenedor.innerHTML = `
+        <div class="seccion">
           <div class="vacio">
-
-            🌱 Tu lista está vacía.
-
-            <br>
-
-            ¡Agrega algo para comenzar!
-
+            🛒 Tu lista está vacía
           </div>
+        </div>
+      `;
 
-        `;
+      actualizarProgreso();
+
+      return;
+
+    }
+
+
+    const categorias = {};
+
+
+    productos.forEach(producto => {
+
+      if (!categorias[producto.categoria]) {
+
+        categorias[producto.categoria] = [];
 
       }
 
+      categorias[
+        producto.categoria
+      ].push(producto);
+
+    });
 
 
-      categorias.forEach(categoria => {
-
-
-        const productosCategoria =
-
-          productos
-
-            .map((producto, indice) => ({
-
-              ...producto,
-
-              indice
-
-            }))
-
-            .filter(
-
-              producto =>
-
-                producto.categoria === categoria
-
-            );
-
-
-        if (
-          productosCategoria.length === 0
-        ) {
-
-          return;
-
-        }
-
-
+    Object.keys(categorias)
+      .forEach(categoria => {
 
         const seccion =
           document.createElement("div");
-
 
         seccion.className =
           "seccion";
 
 
-        const emoji = {
+        const titulo =
+          document.createElement("h2");
 
-          "Frutas": "🍎",
-
-          "Verduras": "🥬",
-
-          "Lácteos": "🥛",
-
-          "Carnes": "🥩",
-
-          "Bebidas": "🥤",
-
-          "Snacks": "🍪",
-
-          "Aceites y Salsas": "🫒",
-
-          "Panes y Cereales": "🍞",
-
-          "Especias y Sazonadores": "🧂",
-
-          "Artículos para el Hogar": "🧹",
-
-          "Chacharitas": "🛍️",
-
-          "Otros": "📦"
-
-        };
-
-
-        seccion.innerHTML = `
-
-          <h2>
-            ${emoji[categoria]} ${categoria}
-          </h2>
-
-        `;
+        titulo.textContent =
+          categoria;
 
 
         const lista =
           document.createElement("ul");
 
 
-        productosCategoria.forEach(
-          producto => {
+        categorias[categoria]
+          .forEach(producto => {
 
-
-            const item =
+            const li =
               document.createElement("li");
 
 
             if (producto.comprado) {
 
-              item.classList.add(
+              li.classList.add(
                 "comprado"
               );
 
             }
 
 
-            item.innerHTML = `
+            const checkbox =
+              document.createElement(
+                "input"
+              );
 
-              <input
+            checkbox.type =
+              "checkbox";
 
-                type="checkbox"
+            checkbox.className =
+              "checkbox";
 
-                class="checkbox"
-
-                ${
-                  producto.comprado
-                    ? "checked"
-                    : ""
-                }
-
-                onchange="
-
-                  cambiarEstado(
-                    ${producto.indice}
-                  )
-
-                "
-
-              >
+            checkbox.checked =
+              producto.comprado;
 
 
-              <span class="nombre">
+            checkbox.onchange =
+              function() {
 
-                ${producto.nombre}
+                producto.comprado =
+                  checkbox.checked;
 
-              </span>
+                guardarProductos();
 
+                mostrarProductos();
 
-              <button
-
-                class="eliminar"
-
-                onclick="
-
-                  eliminarProducto(
-                    ${producto.indice}
-                  )
-
-                "
-
-              >
-
-                🗑️
-
-              </button>
-
-            `;
+              };
 
 
-            lista.appendChild(item);
+            const nombre =
+              document.createElement(
+                "span"
+              );
 
-          }
+            nombre.className =
+              "nombre";
 
+            nombre.textContent =
+              producto.nombre;
+
+
+            li.appendChild(
+              checkbox
+            );
+
+            li.appendChild(
+              nombre
+            );
+
+
+            /*
+              MOSTRAR CANTIDAD
+            */
+
+            const mostrarCantidades =
+              localStorage.getItem(
+                "mostrarCantidades"
+              ) !== "false";
+
+
+            if (mostrarCantidades) {
+
+              const cantidad =
+                document.createElement(
+                  "span"
+                );
+
+                cantidad.className =
+                  "cantidad";
+
+                cantidad.textContent =
+                  "× " +
+                  (producto.cantidad || 1);
+
+                li.appendChild(
+                  cantidad
+                );
+
+            }
+
+
+            const editar =
+              document.createElement(
+                "button"
+              );
+
+            editar.className =
+              "btn-editar";
+
+            editar.textContent =
+              "✏️";
+
+            editar.onclick =
+              function() {
+
+                abrirEditar(
+                  producto.id
+                );
+
+              };
+
+
+            const eliminar =
+              document.createElement(
+                "button"
+              );
+
+            eliminar.className =
+              "btn-eliminar";
+
+            eliminar.textContent =
+              "🗑️";
+
+            eliminar.onclick =
+              function() {
+
+                eliminarProducto(
+                  producto.id
+                );
+
+              };
+
+
+            li.appendChild(
+              editar
+            );
+
+            li.appendChild(
+              eliminar
+            );
+
+
+            lista.appendChild(
+              li
+            );
+
+          });
+
+
+        seccion.appendChild(
+          titulo
         );
 
+        seccion.appendChild(
+          lista
+        );
 
-        seccion.appendChild(lista);
-
-
-        contenedor.appendChild(seccion);
+        contenedor.appendChild(
+          seccion
+        );
 
       });
 
 
-      actualizarProgreso();
+    actualizarProgreso();
 
-    }
-
-
-
-    function actualizarProgreso() {
-
-      const total =
-        productos.length;
+  }
 
 
-      const comprados =
+  function eliminarProducto(id) {
 
-        productos.filter(
+    productos =
+      productos.filter(
+        producto =>
+          producto.id !== id
+      );
 
-          producto =>
-            producto.comprado
+    guardarProductos();
 
-        ).length;
+    mostrarProductos();
 
-
-      const porcentaje =
-
-        total === 0
-
-          ? 0
-
-          : Math.round(
-
-              (comprados / total) * 100
-
-            );
+  }
 
 
-      document
-        .getElementById(
-          "textoProgreso"
-        )
-        .textContent =
+  function abrirEditar(id) {
 
-        `${comprados} de ${total} productos comprados (${porcentaje}%)`;
-
-
-      document
-        .getElementById(
-          "barraProgreso"
-        )
-        .style.width =
-
-        porcentaje + "%";
-
-    }
-
-
-
-    document
-
-      .getElementById("producto")
-
-      .addEventListener(
-
-        "keydown",
-
-        function(event) {
-
-
-          if (
-            event.key === "Enter"
-          ) {
-
-            agregarProducto();
-
-          }
-
-        }
-
+    const producto =
+      productos.find(
+        producto =>
+          producto.id === id
       );
 
 
+    if (!producto) {
+      return;
+    }
+
+
+    productoEditando =
+      id;
+
+
+    document.getElementById(
+      "editarNombre"
+    ).value =
+      producto.nombre;
+
+
+    document.getElementById(
+      "editarCantidad"
+    ).value =
+      producto.cantidad || 1;
+
+
+    document.getElementById(
+      "editarCategoria"
+    ).value =
+      producto.categoria;
+
+
+    document.getElementById(
+      "editarModal"
+    ).classList.add(
+      "abierto"
+    );
+
+  }
+
+
+  function cerrarEditar() {
+
+    document.getElementById(
+      "editarModal"
+    ).classList.remove(
+      "abierto"
+    );
+
+    productoEditando =
+      null;
+
+  }
+
+
+  function guardarEdicion() {
 
     if (
-      "serviceWorker" in navigator
+      productoEditando === null
     ) {
 
-      navigator.serviceWorker.register(
-        "sw.js"
-      );
+      return;
 
     }
 
+
+    const producto =
+      productos.find(
+        producto =>
+          producto.id ===
+          productoEditando
+      );
+
+
+    if (!producto) {
+      return;
+    }
+
+
+    const nombre =
+      document.getElementById(
+        "editarNombre"
+      ).value.trim();
+
+
+    let cantidad =
+      parseInt(
+        document.getElementById(
+          "editarCantidad"
+        ).value
+      );
+
+
+    const categoria =
+      document.getElementById(
+        "editarCategoria"
+      ).value;
+
+
+    if (!nombre) {
+      return;
+    }
+
+
+    if (!cantidad || cantidad < 1) {
+
+      cantidad = 1;
+
+    }
+
+
+    producto.nombre =
+      nombre;
+
+    producto.cantidad =
+      cantidad;
+
+    producto.categoria =
+      categoria;
+
+
+    guardarProductos();
+
+    cerrarEditar();
+
+    mostrarProductos();
+
+  }
+
+
+  function actualizarProgreso() {
+
+    const total =
+      productos.length;
+
+
+    const comprados =
+      productos.filter(
+        producto =>
+          producto.comprado
+      ).length;
+
+
+    const porcentaje =
+      total === 0
+        ? 0
+        : Math.round(
+            (comprados / total) *
+            100
+          );
+
+
+    document.getElementById(
+      "textoProgreso"
+    ).textContent =
+      comprados +
+      " de " +
+      total +
+      " productos comprados (" +
+      porcentaje +
+      "%)";
+
+
+    document.getElementById(
+      "barraProgreso"
+    ).style.width =
+      porcentaje + "%";
+
+  }
+      function abrirSettings() {
+
+    document
+      .getElementById("settingsModal")
+      .classList.add("abierto");
+
+  }
+
+
+  function cerrarSettings() {
+
+    document
+      .getElementById("settingsModal")
+      .classList.remove("abierto");
+
+  }
+
+
+  function cambiarModoOscuro() {
+
+    const activado =
+      document.getElementById(
+        "modoOscuro"
+      ).checked;
+
+
+    document.body.classList.toggle(
+      "oscuro",
+      activado
+    );
+
+
+    localStorage.setItem(
+      "modoOscuro",
+      activado
+        ? "true"
+        : "false"
+    );
+
+  }
+
+
+  function cargarModoOscuro() {
+
+    const activado =
+      localStorage.getItem(
+        "modoOscuro"
+      ) === "true";
+
+
+    document.body.classList.toggle(
+      "oscuro",
+      activado
+    );
+
+
+    document.getElementById(
+      "modoOscuro"
+    ).checked =
+      activado;
+
+  }
+
+
+  function cambiarMostrarCantidades() {
+
+    const activado =
+      document.getElementById(
+        "mostrarCantidades"
+      ).checked;
+
+
+    localStorage.setItem(
+      "mostrarCantidades",
+      activado
+        ? "true"
+        : "false"
+    );
 
 
     mostrarProductos();
 
-  </script>
+  }
 
+
+  function cargarMostrarCantidades() {
+
+    const activado =
+      localStorage.getItem(
+        "mostrarCantidades"
+      ) !== "false";
+
+
+    document.getElementById(
+      "mostrarCantidades"
+    ).checked =
+      activado;
+
+  }
+
+
+  document
+    .getElementById("producto")
+    .addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          agregarProducto();
+
+        }
+
+      }
+    );
+
+
+  document
+    .getElementById("cantidad")
+    .addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          agregarProducto();
+
+        }
+
+      }
+    );
+
+
+ 
+  cargarMostrarCantidades();
+
+  mostrarProductos();
+
+
+</script>
 
 </body>
 
